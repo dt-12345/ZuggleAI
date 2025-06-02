@@ -92,7 +92,7 @@ protected:
             u32 _1a                         : 0x1; // 0x1a
             u32 update_next_in_frame        : 0x1; // 0x1b - IsUpdateNextInFrame
             u32 _1c                         : 0x1; // 0x1c
-            u32 _1d                         : 0x1; // 0x1d - no update if no child set?
+            u32 _1d                         : 0x1; // 0x1d - no update if no child set? (for if there is a replacement)
             Result result                   : 0x2; // 0x1e-0x1f
         };
         u32 raw;

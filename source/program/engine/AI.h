@@ -95,6 +95,9 @@ public:
     void updateImpl_(const ::ai::NodeCalcArg&) override;
     void leaveImpl_(const ::ai::NodeCalcArg&) override;
     void initializeParametersImpl_() override;
+
+    virtual void select_(const ::ai::NodeCalcArg&) {}
+    virtual bool isIgnoreChildResult();
 };
 
 // TODO: non-AI nodes

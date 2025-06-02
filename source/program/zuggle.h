@@ -4,24 +4,32 @@
 
 #include <container/seadPtrArray.h>
 
-class OneShotZuggle : public engine::ai::OneShotBase {
-    SEAD_RTTI_OVERRIDE(OneShotZuggle, engine::ai::OneShotBase)
+class ExecuteZuggle : public engine::ai::ExecuteBase {
+    SEAD_RTTI_OVERRIDE(ExecuteZuggle, engine::ai::ExecuteBase)
 
 public:
-    AI_NODE_NAME_CATEGORY("OneShotZuggle", "AI");
+    AI_NODE_NAME_CATEGORY("ExecuteZuggle", "AI");
     
     void parseParameters_() override;
+    void enterImpl_(const ai::NodeCalcArg&) override;
     void updateImpl_(const ai::NodeCalcArg&) override;
-    void oneshot_(const ai::NodeCalcArg&) override;
+    void leaveImpl_(const ai::NodeCalcArg&) override;
 
 private:
+    enum State {
+        Zuggle, WaitZuggle, Reequip, WaitReequip
+    };
+
     ai::BoolInput mIsDynamic;
     ai::BoolInput mIsReequip;
     ai::BoolInput mIsShield;
     ai::BoolInput mIsWeapon;
     ai::BoolInput mIsBow;
+    ai::S32Input mCount;
     int mShieldIndex = -1;
     int mWeaponIndex = -1;
     int mBowIndex = -1;
+    int mCounter = 0;
     int mTimer = 0;
+    State mState = Zuggle;
 };

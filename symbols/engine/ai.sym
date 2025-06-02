@@ -16,3 +16,4 @@ _ZN6engine2ai12SelectorBase10enterImpl_ERKN2ai11NodeCalcArgE = __main_start + 0x
 _ZN6engine2ai12SelectorBase11updateImpl_ERKN2ai11NodeCalcArgE = __main_start + 0x02a69b04;
 _ZN6engine2ai12SelectorBase10leaveImpl_ERKN2ai11NodeCalcArgE = __main_start + 0x02999970;
 _ZN6engine2ai12SelectorBase25initializeParametersImpl_Ev = __main_start + 0x0073404c;
+_ZN6engine2ai12SelectorBase19isIgnoreChildResultEv = __main_start + 0x02999974;
