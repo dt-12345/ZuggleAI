@@ -19,7 +19,7 @@ SD_OUT := atmosphere/contents/$(PROGRAM_ID)/exefs
 ifeq ($(LOAD_KIND), Module)
     NNSDK := 1
     LOAD_KIND_ENUM := 2
-    BINARY_NAME := subsdk8 # TODO: support subsdkX?
+    BINARY_NAME := subsdk6 # TODO: support subsdkX?
     SPECS_NAME := module.specs
     MK_NAME := module.mk
 else ifeq ($(LOAD_KIND), AsRtld)

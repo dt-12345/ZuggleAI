@@ -1,0 +1,3 @@
+malloc = __main_start + 0x010a6f50;
+realloc = __main_start + 0x0070b610;
+free = __main_start + 0x006fda20;

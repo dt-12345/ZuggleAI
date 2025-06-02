@@ -1,0 +1,18 @@
+_ZN6engine2ai8NodeBase25initializeParametersImpl_Ev = __main_start + 0x00734118;
+_ZN6engine2ai8NodeBase6f0x100Ev = __main_start + 0x02780e7c;
+_ZN6engine2ai8NodeBase6f0x108Ev = __main_start + 0x02780e84;
+
+_ZN6engine2ai11OneShotBase10enterImpl_ERKN2ai11NodeCalcArgE = __main_start + 0x02a69908;
+_ZN6engine2ai11OneShotBase11updateImpl_ERKN2ai11NodeCalcArgE = __main_start + 0x02a699a4;
+_ZN6engine2ai11OneShotBase25initializeParametersImpl_Ev = __main_start + 0x01098ba4;
+
+_ZN6engine2ai9QueryBase10enterImpl_ERKN2ai11NodeCalcArgE = __main_start + 0x02a699bc;
+_ZN6engine2ai9QueryBase11updateImpl_ERKN2ai11NodeCalcArgE = __main_start + 0x02a69a34;
+_ZN6engine2ai9QueryBase10leaveImpl_ERKN2ai11NodeCalcArgE = __main_start + 0x027c1680;
+_ZN6engine2ai9QueryBase25initializeParametersImpl_Ev = __main_start + 0x00eb7e08;
+
+_ZN6engine2ai12SelectorBase9getResultEv = __main_start + 0x020c3698;
+_ZN6engine2ai12SelectorBase10enterImpl_ERKN2ai11NodeCalcArgE = __main_start + 0x02a69a4c;
+_ZN6engine2ai12SelectorBase11updateImpl_ERKN2ai11NodeCalcArgE = __main_start + 0x02a69b04;
+_ZN6engine2ai12SelectorBase10leaveImpl_ERKN2ai11NodeCalcArgE = __main_start + 0x02999970;
+_ZN6engine2ai12SelectorBase25initializeParametersImpl_Ev = __main_start + 0x0073404c;

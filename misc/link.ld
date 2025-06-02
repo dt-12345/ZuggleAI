@@ -15,7 +15,7 @@ SECTIONS
   PROVIDE_HIDDEN(__start__ = 0x0);
   . = __start__;
   __code_start__ = .;
-  __main_start = . - 0x03645000;
+  __main_start = . - 0x04d0f000;
 
   /* App code */
   .text : {

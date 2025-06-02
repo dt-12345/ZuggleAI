@@ -3,7 +3,7 @@
 #include "util.h"
 #include "lib.hpp"
 
-namespace mod::util
+namespace util
 {
     void Logger::Log(const char* Fmt, ...)
     {
@@ -18,4 +18,4 @@ namespace mod::util
 
         va_end(args);
     }
-} // namespace mod::util
+} // namespace util

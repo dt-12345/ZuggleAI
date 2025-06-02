@@ -1,0 +1,2 @@
+_ZN2ai12AIMgr9sInstanceE = __main_start + 0x04640ce8;
+_ZN2ai18GetNodeFactoryListEv = __main_start + 0x00735dbc;
