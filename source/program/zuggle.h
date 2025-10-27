@@ -29,7 +29,8 @@ private:
     int mShieldIndex = -1;
     int mWeaponIndex = -1;
     int mBowIndex = -1;
-    int mCounter = 0;
-    int mTimer = 0;
+    int mNumZuggled = 0;
     State mState = Zuggle;
+
+    EquipmentUserComponent* getEquipmentUserComponent();
 };

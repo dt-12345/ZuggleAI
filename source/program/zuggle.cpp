@@ -15,7 +15,7 @@ void ExecuteZuggle::parseParameters_() {
     parseS32Input("Count", mCount);
 }
 
-void set_pending_drop(GameActor* actor) {
+static void set_pending_drop(GameActor* actor) {
     if (actor == nullptr) return;
     // cursed but it's the laziest solution to the dependency ring buffer being smaller on 1.0.0 than other versions
     // we don't access any members before the ring buffer so it works in this case
@@ -26,7 +26,7 @@ void set_pending_drop(GameActor* actor) {
 }
 
 // function is inlined so we have to recreate it
-void setEquipedDrawn(DynamicEquipmentComponent* cmp) {
+static void setEquipedDrawn(DynamicEquipmentComponent* cmp) {
     float delta_frame = 1.f;
     if (s_VFRMgrPtr && *s_VFRMgrPtr) {
         CoreCounter* counter = getCoreCounter(*s_VFRMgrPtr);
@@ -49,7 +49,7 @@ void setEquipedDrawn(DynamicEquipmentComponent* cmp) {
     }
 };
 
-void equip_and_draw(GameActor* actor) {
+static void equip_and_draw(GameActor* actor) {
     if (actor == nullptr) return;
     actor = reinterpret_cast<GameActor*>(reinterpret_cast<uintptr_t>(actor) - 0x8);
     DynamicEquipmentComponent* cmp = actor->get_dynamic_equipment_component();
@@ -57,27 +57,28 @@ void equip_and_draw(GameActor* actor) {
     setEquipedDrawn(cmp);
 }
 
+EquipmentUserComponent* ExecuteZuggle::getEquipmentUserComponent() {
+    GameActor* actor = getActor();
+    if (!actor) 
+        return nullptr;
+    actor = reinterpret_cast<GameActor*>(reinterpret_cast<uintptr_t>(actor) - 0x8); // cursed but whatever
+    return actor->get_equipment_user_component();
+}
+
 void ExecuteZuggle::enterImpl_(const ai::NodeCalcArg&) {
-    mCounter = 0;
-    mTimer = 0;
+    mNumZuggled = 0;
     mState = Zuggle;
 }
 
 void ExecuteZuggle::updateImpl_(const ai::NodeCalcArg& arg) {
-    if (mCounter >= mCount.get()) {
+    if (mNumZuggled >= mCount.get()) {
         setResult(ai::Result::Success);
         return;
     }
 
     switch (mState) {
         case Zuggle: {
-            GameActor* actor = getActor();
-            if (!actor) {
-                setResult(ai::Result::Failure);
-                break;
-            }
-            actor = reinterpret_cast<GameActor*>(reinterpret_cast<uintptr_t>(actor) - 0x8); // cursed but whatever
-            EquipmentUserComponent* cmp = actor->get_equipment_user_component();
+            EquipmentUserComponent* cmp = getEquipmentUserComponent();
             if (!cmp) {
                 setResult(ai::Result::Failure);
                 break;
@@ -124,23 +125,15 @@ void ExecuteZuggle::updateImpl_(const ai::NodeCalcArg& arg) {
             // one frame buffer to allow gamedata + equipment to update
             if (!mIsReequip.get()) {
                 mState = Zuggle;
-                ++mCounter;
+                ++mNumZuggled;
             } else {
                 mState = Reequip;
             }
             break;
         }
         case Reequip: {
-            GameActor* actor = getActor();
-            if (!actor) {
-                mState = Zuggle;
-                setResult(ai::Result::Failure);
-                break;
-            }
-            actor = reinterpret_cast<GameActor*>(reinterpret_cast<uintptr_t>(actor) - 0x8); // cursed but whatever
-            EquipmentUserComponent* cmp = actor->get_equipment_user_component();
+            EquipmentUserComponent* cmp = getEquipmentUserComponent();
             if (!cmp) {
-                mState = Zuggle;
                 setResult(ai::Result::Failure);
                 break;
             }
@@ -152,28 +145,34 @@ void ExecuteZuggle::updateImpl_(const ai::NodeCalcArg& arg) {
             if (mIsBow.get())
                 equipItem(*s_PouchMgrPtr, Bow, mBowIndex, (*s_PouchMgrPtr)->current_index);
             mState = WaitReequip;
-            mTimer = 0;
             setResult(ai::Result::Busy);
             break;
         }
         case WaitReequip: {
-            // ideally check the equip status of the selected slots instead of a generic timer
-            // seems like just checking of the actorlink is valid isn't enough though
-            // and I can't be bothered to figure out what the correct check is rn
-            if (mTimer < 2) {
-                ++mTimer;
+            EquipmentUserComponent* cmp = getEquipmentUserComponent();
+            if (!cmp) {
+                setResult(ai::Result::Failure);
+                break;
+            }
+            
+            bool ready = true;
+            if (mIsShield.get())
+                ready = ready && cmp->slots[Shield].state != 1;
+            if (mIsWeapon.get())
+                ready = ready && cmp->slots[Weapon].state != 1;
+            if (mIsBow.get())
+                ready = ready && cmp->slots[Bow].state != 1;
+            if (!ready) {
                 setResult(ai::Result::Busy);
             } else {
                 mState = Zuggle;
-                ++mCounter;
+                ++mNumZuggled;
             }
-            break;
         }
     }
 }
 
 void ExecuteZuggle::leaveImpl_(const ai::NodeCalcArg&) {
-    mCounter = 0;
-    mTimer = 0;
+    mNumZuggled = 0;
     mState = Zuggle;
 }

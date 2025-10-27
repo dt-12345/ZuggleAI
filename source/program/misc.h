@@ -47,13 +47,20 @@ struct ActorLink {
 };
 static_assert(sizeof(ActorLink) == 0x18);
 
+struct SlotState {
+    u32 state;
+    u32 equip_state;
+};
+
 struct EquipmentUserComponent {
     char _00[0x18];
     GameActor* actor;
     ActorLink dynamic_equipment[8];
     ActorLink static_equipment[12];
     ActorLink _200;
-    char _218[0x4588 - 0x218];
+    char _218[0x439c - 0x218];
+    SlotState slots[20];
+    char _443c[0x4588 - 0x443c];
     ActorLink weapon;
     ActorLink shield;
     ActorLink bow;
