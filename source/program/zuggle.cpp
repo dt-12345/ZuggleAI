@@ -70,7 +70,7 @@ void ExecuteZuggle::enterImpl_(const ai::NodeCalcArg&) {
     mState = Zuggle;
 }
 
-void ExecuteZuggle::updateImpl_(const ai::NodeCalcArg& arg) {
+void ExecuteZuggle::updateImpl_(const ai::NodeCalcArg&) {
     if (mNumZuggled >= mCount.get()) {
         setResult(ai::Result::Success);
         return;
@@ -157,11 +157,11 @@ void ExecuteZuggle::updateImpl_(const ai::NodeCalcArg& arg) {
             
             bool ready = true;
             if (mIsShield.get())
-                ready = ready && cmp->slots[Shield].state != 1;
+                ready = ready && cmp->slots[4].state != 1;
             if (mIsWeapon.get())
-                ready = ready && cmp->slots[Weapon].state != 1;
+                ready = ready && cmp->slots[0].state != 1;
             if (mIsBow.get())
-                ready = ready && cmp->slots[Bow].state != 1;
+                ready = ready && cmp->slots[3].state != 1;
             if (!ready) {
                 setResult(ai::Result::Busy);
             } else {
