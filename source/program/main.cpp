@@ -1,5 +1,6 @@
 #include "lib.hpp"
 
+#include "fabs_fix.h"
 #include "zuggle.h"
 
 // just ignore these
@@ -42,6 +43,12 @@ extern "C" void exl_main(void* x0, void* x1) {
     s_GmdMgrPtr = reinterpret_cast<void**>(exl::util::modules::GetTargetOffset(s_MgrOffsets[0]));
     s_VFRMgrPtr = reinterpret_cast<void**>(exl::util::modules::GetTargetOffset(s_VFRMgrOffsets[0]));
     s_PouchMgrPtr = reinterpret_cast<PouchContentMgr**>(exl::util::modules::GetTargetOffset(0x045f28a8));
+
+    FabsFix::InstallAtOffset(0x00c95828);
+    getStructStruct = reinterpret_cast<GetStructStruct*>(exl::util::modules::GetTargetOffset(0x0081fed4));
+    setStructEnum = reinterpret_cast<SetStructEnum*>(exl::util::modules::GetTargetOffset(0x00820bfc));
+    setStructInt = reinterpret_cast<SetStructInt*>(exl::util::modules::GetTargetOffset(0x008202b0));
+    calcHash = reinterpret_cast<CalcHash*>(exl::util::modules::GetTargetOffset(0x006feea8));
 }
 
 extern "C" NORETURN void exl_exception_entry() {

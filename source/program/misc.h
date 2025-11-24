@@ -1,6 +1,7 @@
 #pragma once
 
 #include <container/seadPtrArray.h>
+#include <math/seadVector.h>
 
 // bunch of misc structs I don't feel like organizing
 
@@ -143,6 +144,12 @@ struct PouchContentMgr {
     int current_index;
 };
 
+struct StructHandle {
+    void* mpStruct;
+    int mIndex;
+    bool mIsArray;
+};
+
 inline u32 version = 0xffffffff;
 inline void** s_GmdMgrPtr = nullptr;
 inline void** s_VFRMgrPtr = nullptr;
@@ -156,6 +163,18 @@ inline SetInt* setInt = nullptr; // ideally use gmd::GameDataMgr::setIntArray an
 
 using GetInt = bool (void*, int*, u32);
 inline GetInt* getInt = nullptr;
+
+using GetStructStruct = bool (void*, StructHandle&, const StructHandle&, u32);
+inline GetStructStruct* getStructStruct = nullptr;
+
+using SetStructEnum = void (void*, u32, const StructHandle&, u32);
+inline SetStructEnum* setStructEnum = nullptr;
+
+using SetStructInt = void (void*, s32, const StructHandle&, u32);
+inline SetStructInt* setStructInt = nullptr;
+
+using CalcHash = u32 (const char*, u32);
+inline CalcHash* calcHash = nullptr;
 
 using SetPendingDrop = void (DynamicEquipmentComponent**);
 inline SetPendingDrop* setPendingDrop = nullptr; // tbh, I could just implement this function myself bc it's literally setting a single value
@@ -172,3 +191,72 @@ enum Category {
 
 using EquipFunc = bool (void*, Category, int, int);
 inline EquipFunc* equipItem = nullptr;
+
+struct ByamlIter {
+    void* mpResByaml;
+    u32 mContainerOffset;
+    u8 mNodeType;
+};
+
+struct PouchActorInfoRow {
+    char* mpRowId;
+    char* mpArmorEffectType;
+    char* mpArmorHeadSwapActor;
+    char* mpArmorNextRankActor;
+    char* mpBowQuiverName;
+    char* mpBundleActor;
+    char* mpBundleActorNumGameData;
+    char* mpCapsuleContent;
+    char* mpColorVariationType;
+    char* mpConversionTargetActor;
+    char* mpCureEffectType;
+    char* mpDraftContent;
+    char* mpFakeActorName;
+    ByamlIter mHandleAsPartArmorListIter;
+    char* mpParasailPattern;
+    char* mpPouchCategory;
+    char* mpPouchGetType;
+    char* mpPouchSpecialDeal;
+    char* mpPouchUseType;
+    char* mpPrimaryFoodMaterial;
+    ByamlIter mReadyMadeCookRawMaterialsIter;
+    char* mpTreasureMapContent;
+    char* mpWeaponReplaceSheathName;
+    char* mpWeaponReplaceSheathNameBindZ;
+    char* mpWeaponSheathName;
+    char* mpWeaponSubType;
+    char* mpWeaponType;
+    u32 mArmorHeadMantleType;
+    int mArmorRank;
+    u32 mArmorRequestMantlePattern;
+    u32 mArmorSelfMantlePattern;
+    int mAttachAddAttackValueWithZonau;
+    float mAttachMulAttackValue;
+    float mAttachMulGuardValue;
+    int mBowShotNum;
+    int mBundleActorNum;
+    int mBuyingPrice;
+    int mCureEffectiveTime;
+    int mCureEffectLevel;
+    u32 mDyeColor;
+    sead::Vector3f mDynamicEquipmentPopRot;
+    int mEnergyRecover;
+    int mEquipmentPerformance;
+    int mHitPointRecover;
+    int mMaxRecordExtraLife;
+    int mNoUseEnergyTime;
+    int mPouchSortKey;
+    int mSellingPrice;
+    int mSpiceBoostEffectiveTime;
+    int mSpiceBoostHitPointRecover;
+    int mSpiceBoostMaxHeartLevel;
+    int mSpiceBoostStaminaLevel;
+    int mSpiceBoostSuccessRate;
+    bool mBundleIsUseUniqueName;
+    bool mCannotSell;
+    bool mIsCustomHorseTack;
+    bool mIsPlantableCrop;
+    bool mIsUsable;
+    bool mPouchStockable;
+};
+static_assert(sizeof(PouchActorInfoRow) == 0x160);
